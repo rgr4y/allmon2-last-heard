@@ -107,7 +107,7 @@ let App = new Vue({
         this.addEntry(
           {
             node: match[3],
-            key: match[4],
+            key: match[4] || "KEY",
             via: match[5],
             type: type,
             typeLabel: this.getNodeTypeLabel(type),

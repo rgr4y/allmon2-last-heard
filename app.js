@@ -1,3 +1,10 @@
+/**
+ * WIN System Log Tail / Who's Talking?
+ * 
+ * @author Rob Vella KK9ROB <me@robvella.com>
+ * @type {Vue}
+ */
+
 Vue.component('lt-node-link', {
   template: `<a :href='uri' target="_blank">{{ node }}</a>`,
   props: ['node', 'type'],
@@ -75,6 +82,7 @@ let App = new Vue({
       axios.get(this.uri + '?cmd=log').then(({data}) => {
         this.lastData = data;
         this.parseLogData();
+        this.logs = this.logs.slice(0,500); 
       });
     },
     
@@ -91,7 +99,7 @@ let App = new Vue({
     parseLogData() {
       let rows = this.lastData.split("\n");
 
-      rows.forEach(async (v) => {
+      rows.forEach((v) => {
         let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) .*? (?:\[(?:via) ([0-9]+))?/);
         if (!match) return;
 

@@ -1,5 +1,6 @@
 .header {
     padding: 1em;
+    width: 100%;
 }
 
 .text-center {
@@ -16,7 +17,32 @@
 }
 
 table.logs {
+    width: 85%;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 64em) {
+    table.logs {
+        width: 100%;
+    }
+}
+
+table.logs th {
+    background-color: #3e6eb6;
+    color: #fff;
+    width: 1%;
+}
+
+table.logs th.desc {
     width: 100%;
+}
+
+table.logs tbody tr:nth-child(even){
+    background-color: #cbcbcb;
+}
+
+table.logs tr td.when{
+    white-space: nowrap;
 }
 
 /* We want to give the content area some more padding */

@@ -1,19 +1,18 @@
-Vue.component('lt-startstop', {
-  template: '<button class="pure-button pure-button-primary" @click="toggleTail" :class="{ \'button-error\': buttonState }">' +
-    '{{ buttonState ? "Stop" : "Start" }} Tail</button>',
+Vue.component('lt-node-link', {
+  template: `<a :href='uri' target="_blank">{{ node }}</a>`,
+  props: ['node', 'type'],
   data() {
     return {
-      buttonState: false
+      uri: '',
+      urlMap: {
+        0: '#',
+        1: 'http://stats.allstarlink.org/nodeinfo.cgi?node=',
+        2: 'http://www.irlp.net/status/index.php?nodeid='
+      }
     }
   },
   mounted() {
-    this.toggleTail();
-  },
-  methods: {
-    toggleTail() {
-      this.buttonState = !this.buttonState;
-      this.$emit('click', this.buttonState);
-    }
+    this.uri = this.urlMap[this.type] + this.node;
   }
 });
 
@@ -25,9 +24,13 @@ let App = new Vue({
       intervalTimer: null,
       fetchEvery: 2000,
       // uri = 'http://www3.winsystem.org/monitor/ajax-logtail.php'
-      uri: 'testdata.txt',
+      uri: 'fetchData.php',
       lastData: null,
       logs: [],
+      nodes: {
+        1: [],
+        2: []
+      },
       nodeTypeLabels: {
         0: 'Unknown',
         1: 'Allstar',
@@ -39,9 +42,12 @@ let App = new Vue({
       }
     }
   },
+  mounted() {
+    this.toggleTail();
+  },
   methods: {
-    toggleTail(state) {
-      this.enabled = state;
+    toggleTail() {
+      this.enabled = !this.enabled;
 
       if (this.enabled) {
         this.start();
@@ -63,29 +69,42 @@ let App = new Vue({
     },
     
     fetchLog() {
-      axios.get(this.uri).then(({data}) => {
+      // Force re-render component so it updates callsigns & node info
+      this.$forceUpdate();
+      
+      axios.get(this.uri + '?cmd=log').then(({data}) => {
         this.lastData = data;
         this.parseLogData();
       });
     },
     
+    getNodeInfo(node, type) {
+      if (typeof this.nodes[type][node] !== "undefined") {
+        let info = this.nodes[type][node];
+        if (typeof info.callsign === "undefined") return;
+        return `${info.callsign} ${info.desc} ${info.location}`;
+      } else {
+        return '';
+      }
+    },
+    
     parseLogData() {
-      this.logs = [];
-      let rows = this.lastData.split("\n").reverse();
+      let rows = this.lastData.split("\n");
 
-      rows.forEach((v) => {
+      rows.forEach(async (v) => {
         let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) .*? (?:\[(?:via) ([0-9]+))?/);
         if (!match) return;
 
         let type = this.getNodeType(match[2]);
+        
         this.addEntry(
           {
             node: match[3],
             via: match[4],
             type: type,
             typeLabel: this.getNodeTypeLabel(type),
-            desc: this.fetchNodeInfo(match[3], type),
-            dateTime: match[1],
+            info: this.fetchNodeInfo(match[3], type),
+            dateTime: moment(match[1], "MMM DD hh:mm:ss"),
           }
         );
       });
@@ -100,22 +119,41 @@ let App = new Vue({
     },
 
     fetchNodeInfo(node, type) {
-      return type === 1 ? this.fetchNodeInfoAllstar(node)
-        : (type === 2 ? this.fetchNodeInfoIRLP(node) : null);
-    },
-
-    fetchNodeInfoAllstar(node) {
-      let info;
-      return info;
-    },
-
-    fetchNodeInfoIRLP(node) {
-      let info;
-      return info;
+      if (type === 0) return;
+      
+      // Bind it and recurse, fetch it again
+      // if (typeof this.nodes[type][node] === "undefined") {
+      //   this.nodes[type][node] = null;
+      //   return this.fetchNodeInfo(node, type);
+      if (this.nodes[type][node]) {
+        // Don't even call fetchNode**
+        return this.nodes[type][node];
+      }
+      
+      axios.get(this.uri + '?cmd=node&type='+type+'&node='+node).then(({data}) => {
+        this.nodes[type][node] = data;
+      });
     },
 
     addEntry(log) {
-      this.logs.push(log);
+      // Generate unique ID for this entry
+      log.uniqId = (log.node + log.dateTime.unix()).hashCode();
+      if (!_.findWhere(this.logs, { uniqId: log.uniqId })) {
+        this.logs.unshift(log);
+      }
     },
   }
 });
+
+String.prototype.hashCode = function() {
+  let hash = 0;
+  if (this.length === 0) {
+    return hash;
+  }
+  for (var i = 0; i < this.length; i++) {
+    let char = this.charCodeAt(i);
+    hash = ((hash<<5)-hash)+char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+};

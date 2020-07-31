@@ -14,29 +14,32 @@
     <div class="header">
         <div class="text-center">
             <h1>WIN System Log Tail</h1>
-            <lt-startstop @click="toggleTail"/>
+            <button v-cloak class="pure-button pure-button-primary" @click="toggleTail" :class="{ 'button-error': enabled }">
+                {{ enabled ? "Stop" : "Start" }} Tail
+            </button>
         </div>
     </div>
-
     <div class="content-wrapper">
         <div class="content">
             <table class="pure-table logs">
                 <thead>
                 <tr>
-                    <th>Node #</th>
-                    <th>Via Node</th>
+                    <th>Node#</th>
+                    <th>Via</th>
                     <th>Type</th>
-                    <th>Description</th>
-                    <th>Date/Time</th>
+                    <th>When</th>
+                    <th class="desc">Description</th>
                 </tr>
                 </thead>
                 <tbody v-cloak>
                     <tr v-for="row in logs">
-                        <td>{{ row.node }}</td>
-                        <td>{{ row.via }}</td>
+                        <td><lt-node-link :node="row.node" :type="row.type" /></td>
+                        <td><lt-node-link :node="row.via" :type="row.type" /></td>
                         <td>{{ row.typeLabel }}</td>
-                        <td>{{ fetchNodeInfo(row.node) }}</td>
-                        <td>{{ row.dateTime }}</td>
+                        <td class="when">{{ row.dateTime.format('hh:mm:ss MM/DD/YY') }}</td>
+                        <td>
+                            {{ getNodeInfo(row.node, row.type) }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -46,6 +49,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="app.js" type="text/javascript"></script>
 </body>

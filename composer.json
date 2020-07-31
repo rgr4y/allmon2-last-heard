@@ -1,0 +1,16 @@
+{
+    "name": "robvella/winsystem-whos-talking",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rob Vella",
+            "email": "me@robvella.com"
+        }
+    ],
+    "require": {
+        "symfony/var-dumper": "^5.1",
+        "nesbot/carbon": "^2.37"
+    },
+    "require-dev": {}
+}

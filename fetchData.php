@@ -4,11 +4,15 @@ $cmd = $_GET['cmd'] ?? null;
 $node = intval($_GET['node'] ?? null);
 $type = intval($_GET['type'] ?? null);
 
+header("Cache-Control: max-age=0");
+
 if ($cmd === "log" || $cmd == "logText") {
-    $data = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
+    $irlpData = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
+    $data = file_get_contents(__DIR__."/storage/stream.txt");
     
     // Just output the raw data
     if ($cmd === "log") {
+        echo $irlpData;
         echo $data;
         return;
     }
@@ -43,7 +47,8 @@ function fetchNodeInfoAllstar($node) {
     }
     
     return [
-        'node' => $node
+        'node' => $node,
+        'callsign' => 'Internal'
     ];
 }
 
@@ -66,7 +71,7 @@ function fetchNodeInfoIRLP($node) {
     
     return [
         'node' => $node,
-        'callsign' => $node,
+        'callsign' => 'Internal',
         'desc' => '',
         'location' => ''
     ];

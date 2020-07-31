@@ -88,7 +88,7 @@ let App = new Vue({
       if (typeof this.nodes[type+node] !== "undefined") {
         let info = this.nodes[type+node];
         if (typeof info.callsign === "undefined") return;
-        return `${info.callsign} ${info.desc} ${info.location}`;
+        return `${info.callsign} ${info.desc || ''} ${info.location || ''}`;
       } else {
         return '';
       }
@@ -98,7 +98,8 @@ let App = new Vue({
       let rows = this.lastData.split("\n");
 
       rows.forEach((v) => {
-        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) .*? (?:\[(?:via) ([0-9]+))?/);
+        // let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) ?.*? (?:\[(?:via) ([0-9]+))?/);
+        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY)?.*? (?:\[(?:via) ([0-9]+))?/);
         if (!match) return;
 
         let type = this.getNodeType(match[2]);
@@ -106,7 +107,8 @@ let App = new Vue({
         this.addEntry(
           {
             node: match[3],
-            via: match[4],
+            key: match[4],
+            via: match[5],
             type: type,
             typeLabel: this.getNodeTypeLabel(type),
             info: this.fetchNodeInfo(match[3], type),

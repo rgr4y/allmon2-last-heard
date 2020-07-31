@@ -25,7 +25,8 @@
                 <thead>
                 <tr>
                     <th>Node#</th>
-                    <th>Via</th>
+<!--                    <th>Via</th>-->
+                    <th>Key</th>
                     <th>Type</th>
                     <th>When</th>
                     <th class="desc">Description</th>
@@ -34,7 +35,7 @@
                 <tbody v-cloak>
                     <tr v-for="row in logs">
                         <td><lt-node-link :node="row.node" :type="row.type" /></td>
-                        <td><lt-node-link :node="row.via" :type="row.type" /></td>
+                        <td>{{ row.key }}</td>
                         <td>{{ row.typeLabel }}</td>
                         <td class="when">{{ row.dateTime.format('hh:mm:ss MM/DD/YY') }}</td>
                         <td>

@@ -6,11 +6,10 @@
  */
 
 Vue.component('lt-node-link', {
-  template: `<a :href='uri' target="_blank">{{ node }}</a>`,
+  template: `<a :href='getUrl()' target="_blank">{{ node }}</a>`,
   props: ['node', 'type'],
   data() {
     return {
-      uri: '',
       urlMap: {
         0: '#',
         1: 'http://stats.allstarlink.org/nodeinfo.cgi?node=',
@@ -18,8 +17,10 @@ Vue.component('lt-node-link', {
       }
     }
   },
-  mounted() {
-    this.uri = this.urlMap[this.type] + this.node;
+  methods: {
+    getUrl() {
+      return this.urlMap[this.type] + this.node;
+    }
   }
 });
 
@@ -34,10 +35,7 @@ let App = new Vue({
       uri: 'fetchData.php',
       lastData: null,
       logs: [],
-      nodes: {
-        1: [],
-        2: []
-      },
+      nodes: {},
       nodeTypeLabels: {
         0: 'Unknown',
         1: 'Allstar',
@@ -87,8 +85,8 @@ let App = new Vue({
     },
     
     getNodeInfo(node, type) {
-      if (typeof this.nodes[type][node] !== "undefined") {
-        let info = this.nodes[type][node];
+      if (typeof this.nodes[type+node] !== "undefined") {
+        let info = this.nodes[type+node];
         if (typeof info.callsign === "undefined") return;
         return `${info.callsign} ${info.desc} ${info.location}`;
       } else {
@@ -133,13 +131,13 @@ let App = new Vue({
       // if (typeof this.nodes[type][node] === "undefined") {
       //   this.nodes[type][node] = null;
       //   return this.fetchNodeInfo(node, type);
-      if (this.nodes[type][node]) {
+      if (this.nodes[type+node]) {
         // Don't even call fetchNode**
-        return this.nodes[type][node];
+        return this.nodes[type+node];
       }
       
       axios.get(this.uri + '?cmd=node&type='+type+'&node='+node).then(({data}) => {
-        this.nodes[type][node] = data;
+        this.nodes[type+node] = data;
       });
     },
 

@@ -29,8 +29,6 @@ return;
 function fetchNodeInfoAllstar($node) {
     $db = fetchAllStarDb();
     
-    if (empty($node)) return [];
-    
     $db = explode("\n", $db);
     foreach ($db as $row) {
         $row = explode("|", $row);

@@ -1,0 +1,33 @@
+.header {
+    padding: 1em;
+}
+
+.text-center {
+    align-items: center;
+    text-align: center;
+}
+
+.content-wrapper {
+    /* These styles are required for the "scroll-over" effect */
+    min-height: 12%;
+    z-index: 2;
+    background: white;
+
+}
+
+table.logs {
+    width: 100%;
+}
+
+/* We want to give the content area some more padding */
+.content {
+    padding: 1em 1em 3em;
+}
+
+.button-error {
+    color: #fff;
+    background: rgb(202, 60, 60);
+    /* this is a maroon */
+}
+
+[v-cloak] {display: none}

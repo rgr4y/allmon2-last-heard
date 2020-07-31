@@ -1,0 +1,10 @@
+{
+  "name": "ajax-logtail",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Rob Vella",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.27.0"
+  }
+}

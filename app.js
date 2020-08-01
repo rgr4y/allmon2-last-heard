@@ -80,7 +80,6 @@ let App = new Vue({
       axios.get(this.uri + '?cmd=log').then(({data}) => {
         this.lastData = data;
         this.parseLogData();
-        this.logs = this.logs.slice(0,500); 
       });
     },
     

@@ -140,7 +140,9 @@ class Stream
 
                 if ($keyedBefore !== $keyedNow) {
                     if (filesize($this->streamOutput) >= 4096) {
-                        file_put_contents($this->streamOutput, '');
+                        $so = file_get_contents($this->streamOutput);
+                        $so = substr($so, 2048);
+                        file_put_contents($this->streamOutput, $so);
                     }
                     
                     // Permanently set to Allstar for now

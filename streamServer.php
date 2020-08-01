@@ -144,13 +144,13 @@ class Stream
                     }
                     
                     // Permanently set to Allstar for now
-                    // $nodePrefix = isIrlp($node) ? 'stn' : 'rpt';
                     $nodePrefix = 'rpt';
                     $keyedLabel = $keyedNow ? "KEY" : "UNKEY";
+                    
                     $time = Carbon::now();
                     $timeFormatted = $time->format("M d h:i:s");
-                    // echo "{$node},{$keyedLabel},{$time}\n";
-                    $toWrite = "{$timeFormatted} $nodePrefix{$node} {$keyedLabel} [via {$via}]\n";
+                    
+                    $toWrite = "{$timeFormatted} $nodePrefix{$node} {$keyedLabel} [via {$via}] [{$remoteNode->info}]\n";
                     file_put_contents($this->streamOutput, $toWrite, FILE_APPEND);
                     echo $toWrite;
                 }

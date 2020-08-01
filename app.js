@@ -84,9 +84,9 @@ let App = new Vue({
       });
     },
     
-    getNodeInfo(node, type) {
-      if (typeof this.nodes[type+node] !== "undefined") {
-        let info = this.nodes[type+node];
+    getNodeInfo(node) {
+      if (typeof this.nodes[node.type+node.node] !== "undefined") {
+        let info = this.nodes[node.type+node.node];
         if (typeof info.callsign === "undefined") return;
         return `${info.callsign} ${info.desc || ''} ${info.location || ''}`;
       } else {
@@ -99,9 +99,9 @@ let App = new Vue({
 
       rows.forEach((v) => {
         // let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) ?.*? (?:\[(?:via) ([0-9]+))?/);
-        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY) (?:\[(?:via) ([0-9]+))?/);
+        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY) (?:\[(?:via) ([0-9]+)\])?(?: \[(.*)\])?/);
         if (!match) return;
-
+        console.log(match);
         let type = this.getNodeType(match[2]);
         
         this.addEntry(
@@ -111,7 +111,8 @@ let App = new Vue({
             via: match[5],
             type: type,
             typeLabel: this.getNodeTypeLabel(type),
-            info: this.fetchNodeInfo(match[3], type),
+            // info: this.fetchNodeInfo(match[3], type),
+            info: typeof match[6] !== "undefined" ? match[6].trim() : undefined,
             dateTime: moment(match[1], "MMM DD hh:mm:ss"),
           }
         );

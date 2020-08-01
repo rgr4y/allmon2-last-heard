@@ -1,5 +1,7 @@
 <?php
 
+$streamFile = __DIR__.'/storage/stream.txt';
+
 $cmd = $_GET['cmd'] ?? null;
 $node = intval($_GET['node'] ?? null);
 $type = intval($_GET['type'] ?? null);
@@ -7,13 +9,13 @@ $type = intval($_GET['type'] ?? null);
 header("Cache-Control: max-age=0");
 
 if ($cmd === "log" || $cmd == "logText") {
-    $irlpData = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
-    $data = file_get_contents(__DIR__."/storage/stream.txt");
+    // $irlpData = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
+    $data = file_get_contents($streamFile);
     
     // Just output the raw data
     if ($cmd === "log") {
-        echo $irlpData;
         echo $data;
+        // echo $irlpData;
         return;
     }
 } else if ($cmd === "node") {

@@ -1,10 +1,0 @@
-Jul 30 18:23:23 rpt29600 tx [via 2353]
-Jul 30 18:33:11 rpt45073 tx [via 2353]
-Jul 30 18:33:24 rpt48697 tx [via 2560]
-Jul 30 18:33:33 stn3543 92 packets
-Jul 30 18:33:43 rpt28462 tx [via 2560]
-Jul 30 18:33:51 rpt28462 tx [via 2560]
-Jul 30 18:33:57 rpt28462 tx [via 2560]
-
-
-

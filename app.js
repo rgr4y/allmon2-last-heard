@@ -99,7 +99,7 @@ let App = new Vue({
 
       rows.forEach((v) => {
         // let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) ?.*? (?:\[(?:via) ([0-9]+))?/);
-        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY)?.*? (?:\[(?:via) ([0-9]+))?/);
+        let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY) (?:\[(?:via) ([0-9]+))?/);
         if (!match) return;
 
         let type = this.getNodeType(match[2]);
@@ -129,10 +129,6 @@ let App = new Vue({
     fetchNodeInfo(node, type) {
       if (type === 0) return;
       
-      // Bind it and recurse, fetch it again
-      // if (typeof this.nodes[type][node] === "undefined") {
-      //   this.nodes[type][node] = null;
-      //   return this.fetchNodeInfo(node, type);
       if (this.nodes[type+node]) {
         // Don't even call fetchNode**
         return this.nodes[type+node];

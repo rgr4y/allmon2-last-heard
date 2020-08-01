@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "ext-json": "*",
         "symfony/var-dumper": "^5.1",
         "nesbot/carbon": "^2.37"
     },

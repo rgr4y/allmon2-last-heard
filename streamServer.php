@@ -139,7 +139,7 @@ class Stream
                 $this->keyed[$node] = $keyedNow ?: null;
 
                 if ($keyedBefore !== $keyedNow) {
-                    if (filesize($this->streamOutput) >= 10240) {
+                    if (filesize($this->streamOutput) >= 4096) {
                         file_put_contents($this->streamOutput, '');
                     }
                     

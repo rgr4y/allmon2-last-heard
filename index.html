@@ -33,10 +33,10 @@
                 </tr>
                 </thead>
                 <tbody v-cloak>
-                    <tr v-for="row in logs">
+                    <tr v-for="row in logs" :class="{ keyed: isKeyedNow(row) }">
                         <td><lt-node-link :node="row.node" :type="row.type" /></td>
                         <td>{{ row.via }}</td>
-                        <td>{{ row.key }}</td>
+                        <td>{{ row.keyed }}</td>
                         <td>{{ row.typeLabel }}</td>
                         <td class="when">{{ row.dateTime.format('hh:mm:ss MM/DD/YY') }}</td>
                         <td>{{ row.info }}</td>

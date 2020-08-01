@@ -101,13 +101,12 @@ let App = new Vue({
         // let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) ?.*? (?:\[(?:via) ([0-9]+))?/);
         let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) (KEY|UNKEY) (?:\[(?:via) ([0-9]+)\])?(?: \[(.*)\])?/);
         if (!match) return;
-        console.log(match);
         let type = this.getNodeType(match[2]);
         
         this.addEntry(
           {
             node: match[3],
-            key: match[4] || "KEY",
+            keyed: match[4] || "KEY",
             via: match[5],
             type: type,
             typeLabel: this.getNodeTypeLabel(type),
@@ -147,6 +146,13 @@ let App = new Vue({
         this.logs.unshift(log);
       }
     },
+    isKeyedNow(node) {
+      if (node.keyed === "KEY") {
+        return true;
+      }
+      
+      return false;
+    }
   }
 });
 

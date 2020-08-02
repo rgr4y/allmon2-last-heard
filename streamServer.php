@@ -128,7 +128,7 @@ class Stream
         foreach ($obj as $node => $v) {
             foreach ($v->remote_nodes as $remoteNode) {
                 $via  = intval($node);
-                $node = intval($remoteNode->node);
+                $node = $remoteNode->node;
                 if ($this->isIgnored($node)) continue;
 
                 // Capture previous keyed values

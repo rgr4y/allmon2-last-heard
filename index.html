@@ -39,7 +39,7 @@
                         <td>{{ row.keyed }}</td>
                         <td>{{ row.typeLabel }}</td>
                         <td class="when">{{ row.dateTime.format('hh:mm:ss MM/DD/YY') }}</td>
-                        <td>{{ row.info }}</td>
+                        <td v-html="row.info"></td>
                     </tr>
                 </tbody>
             </table>

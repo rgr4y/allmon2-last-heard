@@ -100,7 +100,7 @@ class Stream
 
         if (!$this->stream) {
             $this->appendToStreamOutput($this->timeFormatted() . " rpt0000 KEYED [via 0000] [WINSystem Allmon Connection Failed]");
-            sleep(5);
+            sleep(120);
             $this->streamLoop();
         }
         

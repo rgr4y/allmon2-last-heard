@@ -2,9 +2,16 @@ a:visited, a:active, a:link {
     color: black;
 }
 
+
 .header {
-    padding: 1em;
+    padding-top: 1em;
     width: 100%;
+}
+
+.header-disclaimer {
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 1.5em;
 }
 
 .text-center {

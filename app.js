@@ -62,6 +62,8 @@ let App = new Vue({
     },
     
     start() {
+      this.logs = [];
+      
       this.intervalTimer = setInterval(() => {
         this.fetchLog();
       }, this.fetchEvery);

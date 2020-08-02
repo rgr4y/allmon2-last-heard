@@ -68,10 +68,16 @@ class Stream
          *  
          */
         $this->ignore = array_merge($this->hubs, $this->ignore);
-        $this->stream = fopen($this->getAllMonUri(), "r");
         $this->streamLoop();
     }
 
+    /**
+     * 
+     */
+    protected function openStream() {
+        $this->stream = fopen($this->getAllMonUri(), "r");
+    }
+    
     /**
      * @return string
      */
@@ -89,7 +95,15 @@ class Stream
      */
     public function streamLoop() {
         $buffer = '';
+        
+        $this->openStream();
 
+        if (!$this->stream) {
+            $this->appendToStreamOutput($this->timeFormatted() . " rpt0000 KEYED [via 0000] [WINSystem Allmon Connection Failed]");
+            sleep(5);
+            $this->streamLoop();
+        }
+        
         while (!feof($this->stream)) {
             $buffer .= stream_get_line($this->stream, 2048, "\n\n");
 
@@ -103,8 +117,6 @@ class Stream
                 }
             }
         }
-        
-        // TODO: Failure condition for feof to restart stream, or let supervisor handle it?
     }
 
     /**
@@ -149,15 +161,29 @@ class Stream
                     // Permanently set to Allstar for now
                     $nodePrefix = 'rpt';
                     $keyedLabel = $keyedNow ? "KEY" : "UNKEY";
-                    
-                    $time = Carbon::now();
-                    $timeFormatted = $time->format("M d h:i:s");
-                    
-                    $toWrite = "{$timeFormatted} $nodePrefix{$node} {$keyedLabel} [via {$via}] [{$remoteNode->info}]\n";
-                    file_put_contents($this->streamOutput, $toWrite, FILE_APPEND);
+
+                    $timeFormatted = $this->timeFormatted();
+                    $toWrite = "{$timeFormatted} $nodePrefix{$node} {$keyedLabel} [via {$via}] [{$remoteNode->info}]";
+                    $this->appendToStreamOutput($toWrite);
                     echo $toWrite;
                 }
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function timeFormatted() {
+        $time = Carbon::now();
+        return $time->format("M d h:i:s");
+    }
+
+    /**
+     * @param $toWrite
+     */
+    protected function appendToStreamOutput($toWrite)
+    {
+        file_put_contents($this->streamOutput, $toWrite."\n", FILE_APPEND);
     }
 }

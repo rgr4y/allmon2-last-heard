@@ -37,7 +37,7 @@
                 </tr>
                 </thead>
                 <tbody v-cloak>
-                    <tr v-for="row in logs" :class="{ keyed: isKeyedNow(row) }">
+                    <tr v-for="row in logs" :class="{ keyed: isKeyedNow(row), error: (row.node == 0000) }">
                         <td><lt-node-link :node="row.node" :type="row.type" /></td>
                         <td>{{ row.via }}</td>
                         <td>{{ row.keyed }}</td>

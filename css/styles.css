@@ -72,4 +72,8 @@ tr.keyed:first-child, tr.keyed:first-child a {
     color: #fff;
 }
 
+tr.keyed:first-child {
+    background-color: red;
+}
+
 [v-cloak] {display: none}

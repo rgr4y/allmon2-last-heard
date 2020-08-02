@@ -101,7 +101,8 @@ class Stream
         if (!$this->stream) {
             $this->appendToStreamOutput($this->timeFormatted() . " rpt0000 KEY [via 0000] [WINSystem Allmon Connection Failed]");
             sleep(120);
-            $this->streamLoop();
+            // Systemd / Supervisor will restart us anyway
+            exit;
         }
         
         while (!feof($this->stream)) {
@@ -117,6 +118,9 @@ class Stream
                 }
             }
         }
+        
+        // Redundant
+        exit;
     }
 
     /**

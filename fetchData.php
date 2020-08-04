@@ -4,6 +4,8 @@ $cmd = $_GET['cmd'] ?? null;
 $node = intval($_GET['node'] ?? null);
 $type = intval($_GET['type'] ?? null);
 
+header("Cache-Control: no-cache, max-age=0");
+
 if ($cmd === "log" || $cmd == "logText") {
     $data = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
     

@@ -84,10 +84,10 @@ class Stream
     public function getAllMonUri()
     {
         $hubsStr = implode(",", $this->hubs);
-        // return "https://allmon.winsystem.org/server.php?nodes=2353";
+        return "http://localhost/server.php?nodes=" . $hubsStr;
+        // Use this return if you want all nodes
+        // return "http://localhost/server.php";
         // return __DIR__ . '/test.stream';
-        return "https://allmon.winsystem.org/server.php?nodes=" . $hubsStr;
-        return "http://kk9rob/allmon2/server.php?nodes=52003";
     }
 
     /**
@@ -99,7 +99,7 @@ class Stream
         $this->openStream();
 
         if (!$this->stream) {
-            $this->appendToStreamOutput($this->timeFormatted() . " rpt0000 KEY [via 0000] [WINSystem Allmon Connection Failed]");
+            $this->appendToStreamOutput($this->timeFormatted() . " rpt0000 KEY [via 0000] [Allmon Connection Failed]");
             sleep(120);
             // Systemd / Supervisor will restart us anyway
             exit;

@@ -1,5 +1,5 @@
 /**
- * WIN System Log Tail / Who's Talking?
+ * Public Allmon Who's Talking?
  * 
  * @author Rob Vella KK9ROB <me@robvella.com>
  * @type {Vue}

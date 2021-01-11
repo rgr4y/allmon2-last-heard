@@ -1,0 +1,12 @@
+[Unit]
+Description=Allmon HAM Radio Stream Server
+
+[Service]
+User=pi
+Group=pi
+Restart=always
+ExecStart=/usr/bin/php /srv/http/talking/streamServer.php
+
+[Install]
+WantedBy=multi-user.target
+

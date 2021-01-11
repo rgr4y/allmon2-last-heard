@@ -81,7 +81,7 @@ function fetchNodeInfoIRLP($node) {
 
 function fetchAllStarDb() {
     $dbFile = __DIR__.'/storage/allstar.txt';
-    if (!file_exists($dbFile)) {
+    if (!file_exists($dbFile) || outdatedFile($dbFile)) {
         $db = file_get_contents("http://allmondb.allstarlink.org");
         file_put_contents($dbFile, $db);
         return $db;
@@ -93,7 +93,7 @@ function fetchAllStarDb() {
 function fetchIRLPDb() {
     $dbFile = __DIR__.'/storage/irlp.txt';
     
-    if (!file_exists($dbFile)) {
+    if (!file_exists($dbFile) || outdatedFile($dbFile)) {
         $db = file_get_contents("http://status.irlp.net/nohtmlstatus.txt.zip");
         file_put_contents("${dbFile}.zip", $db);
         shell_exec("/usr/bin/unzip -p ${dbFile}.zip > ${dbFile}");
@@ -102,3 +102,7 @@ function fetchIRLPDb() {
     return file_get_contents($dbFile);
 }
 
+function outdatedFile($path)
+{
+    return time() - filemtime($path) > 3600;
+}

@@ -17,13 +17,9 @@ class Stream
      * @var array 
      */
     protected $hubs = [
-        1200,
-        1300,
-        2560,
-        2353,
-        // Offline 07-31-2020
-        // 27084,
-        2545,
+        // !!!!!!!!!!!!!!!!!!!!
+        // IMPORTANT!!! PUT THE NODE #s YOU WANT TO MONITOR HERE!!!!
+        // !!!!!!!!!!!!!!!!!!!!
     ];
 
     /**
@@ -84,7 +80,7 @@ class Stream
     public function getAllMonUri()
     {
         $hubsStr = implode(",", $this->hubs);
-        return "http://localhost/server.php?nodes=" . $hubsStr;
+        return "http://localhost/allmon2/server.php?nodes=" . $hubsStr;
         // Use this return if you want all nodes
         // return "http://localhost/server.php";
         // return __DIR__ . '/test.stream';

@@ -13,6 +13,7 @@ Just plop in a directory that has a PHP web server pointing at it!
 * Copy stream-server.service to /etc/systemd/system
 * Make sure /srv/http/allmon2/astdb.txt exists or is a symlink to a working astdb.txt
 * Make sure hideNodeURL=no in allmon.ini.php for the node stanza that's being monitored
+* Make sure storage/ directory is writable by the PHP user (usually www-data)
 
 ```
 ./composer.phar install

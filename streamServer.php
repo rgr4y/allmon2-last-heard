@@ -17,9 +17,7 @@ class Stream
      * @var array 
      */
     protected $hubs = [
-        // !!!!!!!!!!!!!!!!!!!!
-        // IMPORTANT!!! PUT THE NODE #s YOU WANT TO MONITOR HERE!!!!
-        // !!!!!!!!!!!!!!!!!!!!
+        47766,41522,'41522A',41223,41288,51288,48701,43845,41689
     ];
 
     /**
@@ -80,7 +78,7 @@ class Stream
     public function getAllMonUri()
     {
         $hubsStr = implode(",", $this->hubs);
-        return "http://localhost/allmon2/server.php?nodes=" . $hubsStr;
+        return "https://www.hubnetwork.uk/pubmon-web/server.php?nodes=" . $hubsStr;
         // Use this return if you want all nodes
         // return "http://localhost/server.php";
         // return __DIR__ . '/test.stream';

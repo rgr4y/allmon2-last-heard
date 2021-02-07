@@ -3,10 +3,10 @@
 $streamFile = __DIR__.'/storage/stream.txt';
 
 $cmd = $_GET['cmd'] ?? null;
-$node = intval($_GET['node'] ?? null);
+$node = $_GET['node'] ?? null;
 $type = intval($_GET['type'] ?? null);
 
-header("Cache-Control: max-age=0");
+header("Cache-Control: no-cache, max-age=0");
 
 if ($cmd === "log" || $cmd == "logText") {
     // $irlpData = file_get_contents("http://www3.winsystem.org/monitor/ajax-logtail.php");
@@ -42,9 +42,9 @@ function fetchNodeInfoAllstar($node) {
         
         return [
             'node' => $node,
-            'callsign' => $row[1],
-            'desc' => $row[2],
-            'location' => $row[3]
+            'callsign' => $row[1] ?? '',
+            'desc' => $row[2] ?? '',
+            'location' => $row[3] ?? ''
         ];
     }
     

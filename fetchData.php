@@ -1,7 +1,7 @@
 <?php
 
 $cmd = $_GET['cmd'] ?? null;
-$node = intval($_GET['node'] ?? null);
+$node = $_GET['node'] ?? null;
 $type = intval($_GET['type'] ?? null);
 
 header("Cache-Control: no-cache, max-age=0");
@@ -16,7 +16,7 @@ if ($cmd === "log" || $cmd == "logText") {
     }
 } else if ($cmd === "node") {
     if (empty($node)) return;
-    
+
     if ($type === 1) {
         $info = fetchNodeInfoAllstar($node);
     } else if ($type === 2) { 
@@ -34,18 +34,19 @@ function fetchNodeInfoAllstar($node) {
     $db = explode("\n", $db);
     foreach ($db as $row) {
         $row = explode("|", $row);
-        if (intval($row[0]) !== $node) continue;
+        if (intval($row[0]) != $node) continue;
         
         return [
             'node' => $node,
-            'callsign' => $row[1],
-            'desc' => $row[2],
-            'location' => $row[3]
+            'callsign' => $row[1] ?? '',
+            'desc' => $row[2] ?? '',
+            'location' => $row[3] ?? ''
         ];
     }
     
     return [
-        'node' => $node
+        'node' => $node,
+        'callsign' => $row[1],
     ];
 }
 

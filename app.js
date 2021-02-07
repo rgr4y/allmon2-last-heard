@@ -101,6 +101,7 @@ let App = new Vue({
         let match = v.match(/([A-Za-z]+ [0-9]+ [0-9]+\:[0-9]+\:[0-9]+) (rpt|stn)([A-Za-z0-9]+) .*? (?:\[(?:via) ([0-9]+))?/);
         if (!match) return;
 
+        match[2] = match[3] < 2000 ? 'stn' : match[2];
         let type = this.getNodeType(match[2]);
         
         this.addEntry(
